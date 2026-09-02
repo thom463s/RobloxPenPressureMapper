@@ -2,10 +2,8 @@ using OpenTabletDriver.Plugin;
 using OpenTabletDriver.Plugin.Attributes;
 using OpenTabletDriver.Plugin.Output;
 using OpenTabletDriver.Plugin.Tablet;
-
-#if WINDOWS
 using PressureMapper.Windows;
-#endif
+using PressureMapper.Linux;
 
 namespace PressureMapper;
 
@@ -30,12 +28,18 @@ public class ControllerMapper : IPositionedPipelineElement<IDeviceReport>
 
     static ControllerMapper()
     {
-        #if WINDOWS
+        if (OperatingSystem.IsWindows()) {
             controller = new VigEmController();
-        #else
+        }
+        else if (OperatingSystem.IsLinux())
+        {
+            controller = new UinputController();
+        }
+        else
+        {
             controller = new IVirtController();
             Log.WriteNotify("PressureMapper", "No virtual controller implementation is available for the current device.", LogLevel.Warning);
-        #endif
+        }
     }
 
     [TabletReference]
