@@ -18,6 +18,7 @@ public enum ControllerSide
 public class IVirtController
 {
     public virtual void SetTrigger(ControllerSide side, float value, float max) { }
+    public virtual void SendKey() { }
     public virtual void Report() { }
 }
 
@@ -59,6 +60,7 @@ public class ControllerMapper : IPositionedPipelineElement<IDeviceReport>
         }
 
         controller.Report();
+        controller.SendKey();
         Emit?.Invoke(device_report);
     }
 }

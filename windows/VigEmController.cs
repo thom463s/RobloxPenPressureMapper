@@ -28,6 +28,12 @@ public class VigEmController : IVirtController
         controller.SetSliderValue(slider, (byte)(value / max * byte.MaxValue));
     }
 
+    public override void SendKey()
+    {
+        const ushort VK_F13 = 0x7C;
+        KeyboardSimulator.PressKey(VK_F13);
+    }
+
     public override void Report()
     {
         controller.SubmitReport();
